@@ -48,7 +48,7 @@ OctomapServer::OctomapServer(const ros::NodeHandle private_nh_, const ros::NodeH
   m_octree(NULL),
   m_maxRange(-1.0),
   m_minRange(-1.0),
-  m_worldFrameId("map"), m_baseFrameId("base_footprint"),
+  m_worldFrameId("/map"), m_baseFrameId("base_footprint"),
   m_useHeightMap(true),
   m_useColoredMap(false),
   m_colorFactor(0.8),
@@ -652,10 +652,6 @@ void OctomapServer::publishAll(const ros::Time& rostime){
       occupiedNodesVis.markers[i].scale.x = size;
       occupiedNodesVis.markers[i].scale.y = size;
       occupiedNodesVis.markers[i].scale.z = size;
-      occupiedNodesVis.markers[i].pose.orientation.x=0;
-      occupiedNodesVis.markers[i].pose.orientation.y=0;
-      occupiedNodesVis.markers[i].pose.orientation.z=0;
-      occupiedNodesVis.markers[i].pose.orientation.w=1;
       if (!m_useColoredMap)
         occupiedNodesVis.markers[i].color = m_color;
 
@@ -928,7 +924,7 @@ void OctomapServer::filterGroundPlane(const PCLPointCloud& pc, PCLPointCloud& gr
       second_pass.setInputCloud(pc.makeShared());
       second_pass.filter(ground);
 
-      second_pass.setNegative (true);
+      second_pass.setFilterLimitsNegative (true);
       second_pass.filter(nonground);
     }
 
